@@ -11,7 +11,7 @@ public class Tokenizer {
         }
     }
 
-    private static Map<String, Operator> ops = new HashMap<>() {{
+    public static Map<String, Operator> ops = new HashMap<>() {{
         put("+", Operator.ADD);
         put("-", Operator.SUBTRACT);
         put("*", Operator.MULTIPLY);
