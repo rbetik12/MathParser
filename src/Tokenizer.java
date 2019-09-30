@@ -1,56 +1,51 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.Pattern;
-
-class Token {
-    String type;
-    String value;
-
-    public Token(String type, String value) {
-        this.type = type;
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return type + "(" + value + ")";
-    }
-}
+import java.util.*;
 
 public class Tokenizer {
 
-    private static StringBuilder numberBuffer = new StringBuilder();
+    private enum Operator {
+        ADD(1), SUBTRACT(1), MULTIPLY(2), DIVIDE(2);
+        final int precedence;
 
-    private static ArrayList<Token> tokenize(String expr) {
-        expr = expr.replaceAll("\\s+", "");
-        String[] literals = expr.split("");
-        System.out.println("Literals: " + Arrays.toString(literals));
-        ArrayList<Token> tokens = new ArrayList<>();
-        int i = 0;
-        while (i < literals.length) {
-            if (Pattern.matches("[0-9]", literals[i])) {
-                numberBuffer.append(literals[i]);
-            }
-            else if (Pattern.matches("[-+*/]", literals[i])) {
-                addNumberToken(tokens);
-                tokens.add(new Token("Operator", literals[i]));
-            }
-            else if (Pattern.matches("[a-z]", literals[i])) {
-                tokens.add(new Token("Variable", literals[i]));
-            }
-            if (i == literals.length - 1) {
-                addNumberToken(tokens);
-            }
-            i++;
+        Operator(int p) {
+            precedence = p;
         }
-        return tokens;
     }
 
-    private static void addNumberToken(ArrayList<Token> tokens) {
-        if (numberBuffer.length() > 0) {
-            tokens.add(new Token("Number", numberBuffer.toString()));
-            numberBuffer.delete(0, numberBuffer.length());
+    private static Map<String, Operator> ops = new HashMap<>() {{
+        put("+", Operator.ADD);
+        put("-", Operator.SUBTRACT);
+        put("*", Operator.MULTIPLY);
+        put("/", Operator.DIVIDE);
+    }};
+
+    private static boolean isHigerPrec(String op, String sub) {
+        return (ops.containsKey(sub) && ops.get(sub).precedence >= ops.get(op).precedence);
+    }
+
+    public static String[] postfix(String infix) {
+        StringBuilder output = new StringBuilder();
+        Deque<String> stack = new LinkedList<>();
+
+        for (String token : infix.split("\\s")) {
+            if (ops.containsKey(token)) {
+                while (!stack.isEmpty() && isHigerPrec(token, stack.peek()))
+                    output.append(stack.pop()).append(' ');
+                stack.push(token);
+            } else if (token.equals("(")) {
+                stack.push(token);
+            } else if (token.equals(")")) {
+                while (!stack.peek().equals("("))
+                    output.append(stack.pop()).append(' ');
+                stack.pop();
+            } else {
+                output.append(token).append(' ');
+            }
         }
+
+        while (!stack.isEmpty())
+            output.append(stack.pop()).append(' ');
+
+        return output.toString().split(" ");
     }
 
     public static void main(String[] args) {
@@ -58,8 +53,7 @@ public class Tokenizer {
     }
 
     public static void test() {
-        System.out.println(Tokenizer.tokenize("a500+200"));
-        System.out.println(Tokenizer.tokenize("2 + 3 + 10 + 500 + 10"));
-        System.out.println(Tokenizer.tokenize("2 * 5 / 6"));
+        System.out.println(Arrays.toString(postfix("2 * ( 3 - 2 )")));
+        System.out.println(Arrays.toString(postfix("- 5 * ( 3 - 2 )")));
     }
 }
