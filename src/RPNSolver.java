@@ -1,10 +1,10 @@
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class RPNSolver {
     public static int solve(String[] tokens) throws Exception {
         Deque<String> stack = new LinkedList<>();
+        System.out.println(Arrays.toString(tokens));
         for (String token : tokens) {
             if (Pattern.matches("-?[0-9]{1,10}", token)) {
                 stack.push(token);
@@ -33,10 +33,10 @@ public class RPNSolver {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(solve(Tokenizer.postfix("-2 * ( 3 + 5 )")));
-        System.out.println(solve(Tokenizer.postfix("2 / ( 3 + 5 )")));
-        System.out.println(solve(Tokenizer.postfix("2 / 3 + 5 ")));
-        System.out.println(solve(Tokenizer.postfix("-50 * ( 30 + ( 40 - 20 ) / 2 )")));
+        Map<String, String> vars = new HashMap<>();
+        vars.put("a", "30");
+        System.out.println(RPNSolver.solve(Tokenizer.tokenize("2 * (30 + a) / 100 * a", vars)));
+        System.out.println(RPNSolver.solve(Tokenizer.tokenize("3 + 4 * 2 / (1 - 5)", vars)));
     }
 }
 
