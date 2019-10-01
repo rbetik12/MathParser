@@ -12,6 +12,7 @@ public class Parser {
         test();
     }
 
+
     private static void test() {
         Map<String, String> vars = new HashMap<>();
         vars.put("a", "30");
