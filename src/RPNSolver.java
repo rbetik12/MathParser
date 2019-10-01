@@ -31,12 +31,5 @@ public class RPNSolver {
         }
         return Integer.parseInt(stack.pop());
     }
-
-    public static void main(String[] args) throws Exception {
-        Map<String, String> vars = new HashMap<>();
-        vars.put("a", "30");
-        System.out.println(RPNSolver.solve(Tokenizer.tokenize("2 * (30 + a) / 100 * a", vars)));
-        System.out.println(RPNSolver.solve(Tokenizer.tokenize("3 + 4 * 2 / (1 - 5)", vars)));
-    }
 }
 

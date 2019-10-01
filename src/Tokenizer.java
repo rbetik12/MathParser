@@ -53,7 +53,6 @@ public class Tokenizer {
     private static ArrayList<String> buildTokensList(String expr) {
         expr = expr.replaceAll("\\s+", "");
         String[] literals = expr.split("");
-//        System.out.println("Literals: " + Arrays.toString(literals));
         StringBuilder numberBuffer = new StringBuilder();
         ArrayList<String> tokens = new ArrayList<>();
 
@@ -106,17 +105,5 @@ public class Tokenizer {
         if (matcher.find()) {
             throw new Error("That expression contains inappropriate symbols: " + matcher.group());
         }
-    }
-
-    public static void main(String[] args) {
-        test();
-    }
-
-    private static void test() {
-        Map<String, String> vars = new HashMap<>();
-        vars.put("a", "30");
-        System.out.println(Arrays.toString(Tokenizer.tokenize("2 * (30 + a) /    120", vars)));
-        System.out.println(Arrays.toString(Tokenizer.tokenize("-5 * (3 - 2)", vars)));
-        System.out.println(Arrays.toString(Tokenizer.tokenize("-5 * (3 - 2) + (-10*20) + a", vars)));
     }
 }
