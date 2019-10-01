@@ -2,9 +2,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class RPNSolver {
-    public static int solve(String[] tokens) throws Exception {
+    public static int solve(String[] tokens) {
         Deque<String> stack = new LinkedList<>();
-        System.out.println(Arrays.toString(tokens));
         for (String token : tokens) {
             if (Pattern.matches("-?[0-9]{1,10}", token)) {
                 stack.push(token);
@@ -30,6 +29,10 @@ public class RPNSolver {
             }
         }
         return Integer.parseInt(stack.pop());
+    }
+
+    static int parse(String expr, Map<String, String> vars) {
+        return solve(Tokenizer.tokenize(expr, vars));
     }
 }
 
