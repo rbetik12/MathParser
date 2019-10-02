@@ -93,6 +93,10 @@ public class Tokenizer {
             }
 
         }
+        Matcher matcher = Pattern.compile("[a-z]").matcher(expr);
+        if (matcher.find()) {
+            return replaceVars(varsMap, expr);
+        }
         return expr;
     }
 
