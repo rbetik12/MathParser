@@ -30,7 +30,7 @@ public class ParserTest {
     }
 
     @Test
-    public void test3() throws Exception {
+    public void test3() {
         System.out.println("========================================================TEST3========================================================");
         testEquation("x+y/z",
                 ImmutableMap.of("x", "1", "y", "2", "z", "x"),
@@ -38,7 +38,7 @@ public class ParserTest {
     }
 
     @Test
-    public void test4() throws Exception {
+    public void test4() {
         System.out.println("========================================================TEST4========================================================");
         testEquation("(f + k)*(h - g)/f",
                 ImmutableMap.of("f", 61, "k", 32, "h", 354, "g", 19),
@@ -46,7 +46,7 @@ public class ParserTest {
     }
 
     @Test
-    public void test5() throws Exception {
+    public void test5() {
         System.out.println("========================================================TEST5========================================================");
         testEquation("a/b/c/d",
                 ImmutableMap.of("a", 89411, "b", 32, "c", 7, "d", 5),
@@ -54,7 +54,7 @@ public class ParserTest {
     }
 
     @Test
-    public void test6() throws Exception {
+    public void test6() {
         System.out.println("========================================================TEST6========================================================");
         final int a = randomInt();
         final int b = randomInt();
@@ -65,7 +65,7 @@ public class ParserTest {
     }
 
     @Test
-    public void test7() throws Exception {
+    public void test7() {
         System.out.println("========================================================TEST7========================================================");
         final int a = randomInt();
         final int b = randomInt();
@@ -76,7 +76,7 @@ public class ParserTest {
     }
 
     @Test
-    public void test8() throws Exception {
+    public void test8() {
         System.out.println("========================================================TEST8========================================================");
         final int a = randomInt();
         final int b = randomInt();
@@ -84,6 +84,14 @@ public class ParserTest {
         testEquation("(c*(a-b)/b)*a",
                 ImmutableMap.of("a", a, "b", b, "c", c.name),
                 (c.val * (a - b) / b) * a);
+    }
+
+    @Test
+    public void test9() {
+        System.out.println("========================================================TEST9========================================================");
+        testEquation("2 + c * a",
+                ImmutableMap.of("a", 10, "c", 20),
+                202);
     }
 
     private void testEquation(final String equation, final ImmutableMap<String, Object> params, final int expected) {
@@ -108,8 +116,8 @@ public class ParserTest {
         return values[random.nextInt(values.length)];
     }
 
-    private static Arg<Integer> arg(final String name, final Integer val){
-        return new Arg<Integer>(name, val);
+    private static Arg<Integer> arg(final String name, final Integer val) {
+        return new Arg<>(name, val);
     }
 
     private static class Arg<T> {
