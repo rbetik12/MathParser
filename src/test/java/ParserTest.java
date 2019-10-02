@@ -64,6 +64,28 @@ public class ParserTest {
                 a + b / c);
     }
 
+    @Test
+    public void test7() throws Exception {
+        System.out.println("========================================================TEST7========================================================");
+        final int a = randomInt();
+        final int b = randomInt();
+        final int c = randomInt();
+        testEquation("(c*(a-b)/b)*a",
+                ImmutableMap.of("a", a, "b", b, "c", c),
+                (c * (a - b) / b) * a);
+    }
+
+    @Test
+    public void test8() throws Exception {
+        System.out.println("========================================================TEST8========================================================");
+        final int a = randomInt();
+        final int b = randomInt();
+        final Arg<Integer> c = randomChoose(arg("a", a), arg("b", b));
+        testEquation("(c*(a-b)/b)*a",
+                ImmutableMap.of("a", a, "b", b, "c", c.name),
+                (c.val * (a - b) / b) * a);
+    }
+
     private void testEquation(final String equation, final ImmutableMap<String, Object> params, final int expected) {
         int result = Parser.parse(equation, params);
 
@@ -79,5 +101,24 @@ public class ParserTest {
 
     private int randomInt() {
         return random.nextInt(100) + 1;
+    }
+
+    @SafeVarargs
+    private final <T> T randomChoose(T... values) {
+        return values[random.nextInt(values.length)];
+    }
+
+    private static Arg<Integer> arg(final String name, final Integer val){
+        return new Arg<Integer>(name, val);
+    }
+
+    private static class Arg<T> {
+        private final String name;
+        private final T val;
+
+        private Arg(final String name, final T val) {
+            this.name = name;
+            this.val = val;
+        }
     }
 }
